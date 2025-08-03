@@ -1,11 +1,20 @@
+# Pour les assets avec le base path
+/front1/assets/*.js
+  Content-Type: application/javascript
+
+/front1/assets/*.css
+  Content-Type: text/css
+
+# Pour les assets sans base path (au cas où)
 /assets/*.js
   Content-Type: application/javascript
 
 /assets/*.css
   Content-Type: text/css
 
+# Pour tous les fichiers JS et CSS
 /*.js
   Content-Type: application/javascript
 
-/*.css  
+/*.css
   Content-Type: text/css
