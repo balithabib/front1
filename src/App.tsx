@@ -1,10 +1,9 @@
-import PaginatedMangaList from './PaginatedMangaList';
-
+import WeatherComponent from './WeatherComponent';
 
 export default function App() {
   return (
     <div>
-      <PaginatedMangaList />
+      <WeatherComponent />
     </div>
   );
 }
