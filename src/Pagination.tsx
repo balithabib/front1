@@ -1,83 +1,73 @@
 
-
-interface PaginationProps {
+type Props = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-}
+};
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  const pageNeighbours = 1;
+export const Pagination = ({ currentPage, totalPages, onPageChange }: Props) => {
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
 
-  const getPageNumbers = (): (number | '...')[] => {
-    const totalNumbers = pageNeighbours * 2 + 3;
-    const totalBlocks = totalNumbers + 2;
-
-    if (totalPages > totalBlocks) {
-      const startPage = Math.max(2, currentPage - pageNeighbours);
-      const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
-      let pages: (number | '...')[] = [];
-
-      pages.push(1);
-
-      if (startPage > 2) {
-        pages.push('...');
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 4) {
+        pages.push(1, 2, 3, 4, 5, '...', totalPages);
+      } else if (currentPage >= totalPages - 3) {
+        pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(
+          1,
+          '...',
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          '...',
+          totalPages
+        );
       }
-
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
-      }
-
-      if (endPage < totalPages - 1) {
-        pages.push('...');
-      }
-
-      pages.push(totalPages);
-
-      return pages;
     }
 
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+    return pages;
   };
 
   const pages = getPageNumbers();
 
   return (
-    <nav className="flex justify-center items-center space-x-2 my-4">
+    <div className="flex justify-center items-center gap-1 my-4 sticky top-0 bg-white py-2 z-10">
       <button
-        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+        className="px-2 py-1 border rounded disabled:opacity-50"
+        onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-1 border rounded disabled:opacity-50"
       >
         &lt;
       </button>
-
-      {pages.map((page, idx) =>
-        page === '...' ? (
-          <span key={idx} className="px-2 select-none">
-            ...
-          </span>
-        ) : (
+      {pages.map((page, i) =>
+        typeof page === 'number' ? (
           <button
-            key={idx}
-            onClick={() => onPageChange(page as number)}
+            key={i}
+            onClick={() => onPageChange(page)}
             className={`px-3 py-1 border rounded ${
-              page === currentPage ? 'bg-blue-500 text-white' : ''
+              currentPage === page ? 'bg-blue-500 text-white' : ''
             }`}
           >
             {page}
           </button>
+        ) : (
+          <span key={i} className="px-2">
+            ...
+          </span>
         )
       )}
-
       <button
-        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+        className="px-2 py-1 border rounded disabled:opacity-50"
+        onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 border rounded disabled:opacity-50"
       >
         &gt;
       </button>
-    </nav>
+    </div>
   );
 };
 

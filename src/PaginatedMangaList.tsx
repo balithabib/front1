@@ -83,7 +83,7 @@ export default function PaginatedMangaList() {
               key={manga.mal_id}
               className="bg-white rounded shadow p-4 flex flex-col items-center"
             >
-              <img src={manga.images.jpg.image_url} alt={manga.title} className="w-full h-60 object-cover rounded" />
+              <img src={manga.images.jpg.image_url} alt={manga.title} className="w-full h-64 object-cover rounded-t" />
               <h3 className="text-lg font-semibold text-center">{manga.title}</h3>
             </div>
           ))}
